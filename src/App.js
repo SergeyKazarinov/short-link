@@ -6,23 +6,17 @@ import Login from "./components/Login";
 import {register, authorize, createLink, getStat} from "./utils/api";
 import Header from "./components/Header";
 import CreateLink from "./components/CreateLink";
+import Table from "./components/Table";
 
 function App({history}) {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [dataLink, setDataLink] = useState([])
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    const handleGetStat = async () => {
-      try {
-        const res = await getStat(token)
-        console.log(res);
-      } catch {
-        console.log('ошибка')
-      }
-    }
-    handleGetStat()
     if (token) {
       setLoggedIn(true);
+      handleGetStat(token)
       history.push('/');
     }
   }, []);
@@ -78,6 +72,17 @@ function App({history}) {
     }
   }
 
+  const handleGetStat = async (token) => {
+    try {
+      const res = await getStat(token)
+      console.log(res);
+      setDataLink(res);
+      return res;
+    } catch {
+      console.log('ошибка')
+    }
+  }
+
 
   return (
     <Switch>
@@ -87,6 +92,7 @@ function App({history}) {
       >
         <Header linkTitle="Выйти" link="/sign-in" loggedIn={loggedIn} onSignOut={handleSignOut}/>
         <CreateLink onSubmit={handleCreateLink}/>
+        <Table dataLink={dataLink}/>
       </ProtectedRoute>
       <Route path="/sign-up">
         <Register onRegistration={handleRegistration} loggedIn={loggedIn}/>

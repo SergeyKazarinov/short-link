@@ -1,0 +1,6 @@
+.table__link {
+  color: rgb(66, 66, 211);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

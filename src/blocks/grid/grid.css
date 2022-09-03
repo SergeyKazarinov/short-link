@@ -1,0 +1,10 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  border: 1px solid rgba(84, 84, 84, 0.7);
+}
+
+.grid:first-child {
+  align-items: center;
+  justify-items: center;
+}

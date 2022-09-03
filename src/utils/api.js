@@ -54,6 +54,17 @@ export const getStat = async (token) => {
     },
   });
   const data = await checkAnswer(res);
-  console.log(data)
+  return data;
+}
+
+export const redirectLink = async (shortLink) => {
+  const res = await fetch(`${BASE_URL}/s/${shortLink}`, {
+    method: 'GET',
+    headers: {
+      'Accept': '*/*',
+    },
+  });
+  const data = await checkAnswer(res);
+  console.log(data);
   return data;
 }
