@@ -9,7 +9,6 @@ const checkAnswer = (res) => {
 }
 
 export const register = async (username, password) => {
-
   const res = await fetch(`${BASE_URL}/register?username=${username}&password=${password}`, {
     method: 'POST',
     headers: {
@@ -54,17 +53,5 @@ export const getStat = async (token) => {
     },
   });
   const data = await checkAnswer(res);
-  return data;
-}
-
-export const redirectLink = async (shortLink) => {
-  const res = await fetch(`${BASE_URL}/s/${shortLink}`, {
-    method: 'GET',
-    headers: {
-      'Accept': '*/*',
-    },
-  });
-  const data = await checkAnswer(res);
-  console.log(data);
   return data;
 }

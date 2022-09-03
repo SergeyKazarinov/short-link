@@ -37,6 +37,7 @@
 @import url(./blocks/button/_type/button_type_authorization.css);
 @import url(./blocks/button/_type/button_type_login.css);
 @import url(./blocks/button/_inactive/button_inactive.css);
+@import url(./blocks/button/_type/button_type_link.css);
 
 /* header*/
 @import url(./blocks/header/header.css);

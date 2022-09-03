@@ -26,8 +26,8 @@ function App({history}) {
       const res = await authorize(username, password);
       localStorage.setItem('token', res.access_token);
       setLoggedIn(true);
+      handleGetStat(res.access_token)
       history.push('/');
-      console.log(res)
     } catch {
       console.log('Ошибка');
     }
@@ -66,7 +66,8 @@ function App({history}) {
     const token = localStorage.getItem('token');
     try {
       const res = await createLink(newLink, token);
-      console.log(res);
+      handleGetStat(token);
+
     } catch {
       console.log('ошибка');
     }
@@ -75,14 +76,12 @@ function App({history}) {
   const handleGetStat = async (token) => {
     try {
       const res = await getStat(token)
-      console.log(res);
-      setDataLink(res);
+      setDataLink(res.reverse());
       return res;
     } catch {
       console.log('ошибка')
     }
   }
-
 
   return (
     <Switch>

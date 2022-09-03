@@ -3,11 +3,11 @@ import React from "react";
 const Table = ({dataLink}) => {
   const tableRow = dataLink.map(item => (
                                   <ul key={item.id} className="list table__row grid">
-                                    <li className="table__short">{item.short}</li>
+                                    <li className="table__short"><a className="link" href={`http://79.143.31.216/s/${item.short}`} target="_blanck">{item.short}</a></li>
                                     <li className="table__link"><a className="link table__link" href={item.target}>{item.target}</a></li>
                                     <li className="table__counter">{item.counter}</li>
                                   </ul>)
-                                )
+          )
 
   return(
     <div className="table">
