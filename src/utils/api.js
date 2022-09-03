@@ -17,8 +17,6 @@ export const register = async (username, password) => {
     },
   });
   const data = await checkAnswer(res);
-  console.log(data);
-
   return data;
 }
 
@@ -32,5 +30,30 @@ export const authorize = async (username, password) => {
     body: `username=${username}&password=${password}`
   });
   const data = await checkAnswer(res);
+  return data;
+}
+
+export const createLink = async (link, token) => {
+  const res = await fetch(`${BASE_URL}/squeeze?link=${link}`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      "Authorization" : `Bearer ${token}`,
+    },
+  });
+  const data = await checkAnswer(res);
+  return data;
+}
+
+export const getStat = async (token) => {
+  const res = await fetch(`${BASE_URL}/statistics`, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      "Authorization" : `Bearer ${token}`,
+    },
+  });
+  const data = await checkAnswer(res);
+  console.log(data)
   return data;
 }

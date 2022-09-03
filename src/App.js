@@ -3,14 +3,24 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import ProtectedRoute from "./components/ProtectedRoute";
 import Register from "./components/Register";
 import Login from "./components/Login";
-import {register, authorize} from "./utils/auth";
+import {register, authorize, createLink, getStat} from "./utils/api";
 import Header from "./components/Header";
+import CreateLink from "./components/CreateLink";
 
 function App({history}) {
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+    const handleGetStat = async () => {
+      try {
+        const res = await getStat(token)
+        console.log(res);
+      } catch {
+        console.log('ошибка')
+      }
+    }
+    handleGetStat()
     if (token) {
       setLoggedIn(true);
       history.push('/');
@@ -30,7 +40,6 @@ function App({history}) {
   }
 
   const handleRegistration = async ({username, password}) => {
-    console.log(username)
     try{
       const res = await register(username, password);
       handleSignIn(username, password);
@@ -46,13 +55,38 @@ function App({history}) {
     }
   }
 
+  const handleCreateLink = async ({link}) => {
+    const newLink = link.split('')
+                    .map(i => {
+                      switch(i) {
+                        case ':':
+                          return i = '%3A';
+                        case '/':
+                          return i = '%2F';
+                        default: 
+                          return i;
+                      }
+                    })
+                    .join('');
+
+    const token = localStorage.getItem('token');
+    try {
+      const res = await createLink(newLink, token);
+      console.log(res);
+    } catch {
+      console.log('ошибка');
+    }
+  }
+
+
   return (
     <Switch>
       <ProtectedRoute
         exact path="/" 
         loggedIn={loggedIn} 
       >
-      <Header  linkTitle="Выйти" link="/sign-in" loggedIn={loggedIn} onSignOut={handleSignOut}/>
+        <Header linkTitle="Выйти" link="/sign-in" loggedIn={loggedIn} onSignOut={handleSignOut}/>
+        <CreateLink onSubmit={handleCreateLink}/>
       </ProtectedRoute>
       <Route path="/sign-up">
         <Register onRegistration={handleRegistration} loggedIn={loggedIn}/>

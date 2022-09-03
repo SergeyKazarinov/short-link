@@ -21,7 +21,7 @@ const SignUp = ({title, titleBtn, isLogin, onSubmit }) => {
   return(
     <div className="sign-up__container">
       <h2 className="form__title">{title}</h2>
-      <form className="form form__page" name="sing-in" onSubmit={handleSubmit}>
+      <form className="form form_type_page" name="sing-in" onSubmit={handleSubmit}>
         <FieldSet 
           inputType="text"
           inputClassType="registration"

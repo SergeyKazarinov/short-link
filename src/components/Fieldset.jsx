@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
 
-function FieldSet({inputType, inputClassType, placeholder, id, minLength, maxLength, value, onChange, inputRef, isOpen}) {
+function FieldSet({inputType, inputClassType, placeholder, id, minLength, maxLength, onChange, inputRef}) {
   const [errorMessage, setErrorMessage] = useState('');
   const [isValid, setIsValid] = useState(true);
-
-  useEffect(() => {
-    setIsValid(true);
-  }, [isOpen]);
 
   function handleErrorMessage(e) {
     if (!e.target.validity.valid) {
@@ -28,7 +24,6 @@ function FieldSet({inputType, inputClassType, placeholder, id, minLength, maxLen
         type={inputType}
         className={`form__input_type_${inputClassType} form__input  ${!isValid && 'form__input_type_error'}`}
         placeholder={placeholder}
-        value={value}
         id={id}
         minLength={minLength}
         maxLength={maxLength}

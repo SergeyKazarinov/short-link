@@ -37,7 +37,7 @@ const useFormValidation = (theFirstInput, theSecondInput) => {
     setIsButtonValid(isTheFirstValid && isTheSecondValid);
   }, [isTheFirstValid, isTheSecondValid])
   
-  return {isButtonValid, handleTheFirstInputChange, handleTheSecondInputChange, resetValid, activeValid};
+  return {isButtonValid, isTheFirstValid, handleTheFirstInputChange, handleTheSecondInputChange, resetValid, activeValid};
 }
 
 export default useFormValidation;
