@@ -9,14 +9,15 @@ const checkAnswer = (res) => {
 }
 
 export const register = async (username, password) => {
-  const res = await fetch(`${BASE_URL}/register`, {
+
+  const res = await fetch(`${BASE_URL}/register?username=${username}&password=${password}`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
     },
-    body: JSON.stringify(`?username=${username}&password=${password}`)
   });
   const data = await checkAnswer(res);
+  console.log(data);
 
   return data;
 }
@@ -28,21 +29,8 @@ export const authorize = async (username, password) => {
       'Accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded'
     },
-    body: JSON.stringify({username, password})
+    body: `username=${username}&password=${password}`
   });
-  const data = await checkAnswer(res);
-  return data;
-}
-
-export const getUserData = async (token) => {
-  const res = await fetch(`${BASE_URL}/users/me`, {
-    method: 'GET',
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization" : `Bearer ${token}`
-    }
-  })
-
   const data = await checkAnswer(res);
   return data;
 }

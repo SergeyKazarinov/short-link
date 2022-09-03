@@ -12,7 +12,6 @@ function App({history}) {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      console.log('sef')
       setLoggedIn(true);
       history.push('/');
     }
@@ -21,23 +20,29 @@ function App({history}) {
   const handleSignIn = async ({username, password}) => {
     try{
       const res = await authorize(username, password);
-      console.log(res)
       localStorage.setItem('token', res.access_token);
       setLoggedIn(true);
       history.push('/');
+      console.log(res)
     } catch {
       console.log('Ошибка');
     }
   }
 
   const handleRegistration = async ({username, password}) => {
+    console.log(username)
     try{
       const res = await register(username, password);
       handleSignIn(username, password);
-      setLoggedIn(true);
-      history.push('/')
     } catch {
       console.log('ошибка регистрации');
+    }
+  }
+
+  const handleSignOut = () => {
+    if(localStorage.getItem('token')) {
+      localStorage.removeItem('token')
+      setLoggedIn(false)
     }
   }
 
@@ -47,7 +52,7 @@ function App({history}) {
         exact path="/" 
         loggedIn={loggedIn} 
       >
-      <Header  linkTitle="Войти" link="/sign-in" loggedIn={loggedIn} />
+      <Header  linkTitle="Выйти" link="/sign-in" loggedIn={loggedIn} onSignOut={handleSignOut}/>
       </ProtectedRoute>
       <Route path="/sign-up">
         <Register onRegistration={handleRegistration} loggedIn={loggedIn}/>
