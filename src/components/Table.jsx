@@ -10,7 +10,6 @@ const Table = ({dataLink, onChange, firstLinkIndex}) => {
                                     <li className="table__counter">{item.counter}</li>
                                   </ul>)
           )
-    console.log(tableRow)
   return(
     <div className="table">
       <h2 className="table__title">Статистика</h2>
@@ -24,9 +23,9 @@ const Table = ({dataLink, onChange, firstLinkIndex}) => {
           
           <ul className="list grid">
             <li className="table__number">Сортировка</li>
-            <li className="table__short"><Select /></li>
-            <li className="table__link"><Select /></li>
-            <li className="table__counter"><Select onChange={onChange}/></li>
+            <li className="table__short"><Select id='short' onChange={onChange}/></li>
+            <li className="table__link"><Select id='target' onChange={onChange}/></li>
+            <li className="table__counter"><Select id='counter' onChange={onChange}/></li>
           </ul>
           {tableRow}
       </div>

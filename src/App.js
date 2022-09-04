@@ -13,6 +13,7 @@ function App({history}) {
   const [token, setToken] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
   const [dataLink, setDataLink] = useState([]);
+  const [defaultStat, setDefaultStat] = useState([])
   const [currentStat, setCurrentStat] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [linksPerPage] = useState(20);
@@ -68,6 +69,7 @@ function App({history}) {
     try {
       const res = await getCurrentStat(token, firstLinkIndex, linksPerPage)
       setCurrentStat(res);
+      setDefaultStat(res);
     } catch {
       console.log('ошибка')
     }
@@ -105,14 +107,16 @@ function App({history}) {
     }
   }
 
-  const handleSortCounterStat = (value) => {
+  const handleSortCounterStat = (value, name) => {
+    const newDataLink = currentStat.concat();
     if (value === "rise") {
-      const newArr = currentStat.sort((a, b) => a.counter - b.counter);
-      setCurrentStat(() => newArr)
+      const sortDataLink = newDataLink.sort((a, b) => (a[name] > b[name] ? 1 : -1))
+      setCurrentStat(sortDataLink)
     } else if (value === "down") {
-      console.log(currentStat)
-      const newArr = currentStat.sort((a, b) => b.counter - a.counter)
-      return setCurrentStat(newArr);
+      const sortDataLink = newDataLink.sort((a, b) => (a[name] < b[name] ? 1 : -1))
+      setCurrentStat(sortDataLink)
+    } else {
+      setCurrentStat(defaultStat)
     }
   }
 
