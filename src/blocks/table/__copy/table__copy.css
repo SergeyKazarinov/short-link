@@ -1,0 +1,21 @@
+.table__copy {
+  cursor: pointer;
+  position: relative;
+  transition: 2s;
+}
+
+.table__copy:hover::after {
+  content: "Скопировать ссылку";
+  position: absolute;
+  top: 0;
+  left: 100px;
+  color: #fff;
+  background-color: #000;
+  padding: 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.table__copy:active::after {
+  content: "Ссылка скопирована";
+}
