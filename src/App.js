@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import { Route, Switch, withRouter } from 'react-router-dom';
 import ProtectedRoute from "./components/ProtectedRoute";
 import Register from "./components/Register";
+import Footer from "./components/Footer";
 import Login from "./components/Login";
 import {register, authorize, createLink, getStat, getCurrentStat} from "./utils/api";
 import Header from "./components/Header";
@@ -92,6 +93,7 @@ function App({history}) {
     try {
       const res = await createLink(newLink, token);
       paginate(currentPage);
+      console.log(res)
 
     } catch {
       console.log('ошибка');
@@ -130,6 +132,7 @@ function App({history}) {
         <CreateLink onSubmit={handleCreateLink}/>
         <Table dataLink={currentStat} onChange={handleSortCounterStat} firstLinkIndex={firstLinkIndex} />
         <Pagination linksPerPage={linksPerPage} totalLinks={dataLink.length} paginate={paginate}/>
+        <Footer />
       </ProtectedRoute>
       <Route path="/sign-up">
         <Register onRegistration={handleRegistration} loggedIn={loggedIn}/>

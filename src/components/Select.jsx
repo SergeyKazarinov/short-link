@@ -7,7 +7,7 @@ const Select = ({id, onChange}) => {
   
   return(
     <select className="select" name="select" onChange={handleChange}>
-      <option className="select__option" value="default" selected>По умолчанию</option>
+      <option className="select__option" value="default">По умолчанию</option>
       <option className="select__option" value="rise">По возрастанию</option>
       <option className="select__option" value="down">По убыванию</option>
   </select>

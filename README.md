@@ -1,70 +1,43 @@
-# Getting Started with Create React App
+# Проект: Short-link
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Сервис создания сокращенных ссылок для отправки по SMS.
 
-## Available Scripts
+## Описание:
 
-In the project directory, you can run:
+Основной функционал сервиса - получение по произвольной ссылке, короткой ссылки (http://79.143.31.216/s/7ASMU), реализующей перенаправление пользователя на исходную страницу. Это может быть удобно для отправки в SMS или Twitter, где размер сообщения ограничен. Помимо этого, пользователь, создавший укороченную ссылку, может просматривать количество переходов по этой ссылке. Эта информация представлена в виде таблицы (таблица имеет пагинацию, работающая на серверной стороне и сортировку столбцов). Тублица будет недоступна остальным пользователям, т.к. на сайте имеется регистрация и авторизация.
+Копирование сокращенных ссылок в буфер обмена осуществлена при клике.
 
-### `npm start`
+## Быстрый старт
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+<br />
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. Склонировать проект на свой компьютер
 
-### `npm test`
+```bash
+git clone https://github.com/SergeyKazarinov/short-link.git
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2. Перейти в папку с проектом и установить зависимости в проекте
 
-### `npm run build`
+```bash
+cd short-link
+npm install
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. Запустить проект
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+npm start
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Технологии:
 
-### `npm run eject`
+- Node.js v16
+- React.js
+- BEM
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Что планируется улучшить:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Рефакторинг кода
+- Использовать TypeScript
+- Задеплоить проект на сервер

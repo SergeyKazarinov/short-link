@@ -1,9 +1,0 @@
-.header__menu_active {
-  display: none;
-}
-
-@media screen and (max-width: 540px) {
-  .header__menu_active {
-    display: flex;
-  }
-}
