@@ -3,20 +3,30 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import ProtectedRoute from "./components/ProtectedRoute";
 import Register from "./components/Register";
 import Login from "./components/Login";
-import {register, authorize, createLink, getStat} from "./utils/api";
+import {register, authorize, createLink, getStat, getCurrentStat} from "./utils/api";
 import Header from "./components/Header";
 import CreateLink from "./components/CreateLink";
 import Table from "./components/Table";
+import Pagination from "./components/Pagination";
 
 function App({history}) {
+  const [token, setToken] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
-  const [dataLink, setDataLink] = useState([])
+  const [dataLink, setDataLink] = useState([]);
+  const [currentStat, setCurrentStat] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [linksPerPage] = useState(20);
+  const lastLinkIndex = currentPage * linksPerPage;
+  const firstLinkIndex = lastLinkIndex - linksPerPage;
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token')
+    
     if (token) {
+      setToken(token)
       setLoggedIn(true);
-      handleGetStat(token)
+      handleGetStat(token);
+      paginate(currentPage);
       history.push('/');
     }
   }, []);
@@ -26,7 +36,8 @@ function App({history}) {
       const res = await authorize(username, password);
       localStorage.setItem('token', res.access_token);
       setLoggedIn(true);
-      handleGetStat(res.access_token)
+      handleGetStat(res.access_token);
+      paginate(currentPage)
       history.push('/');
     } catch {
       console.log('Ошибка');
@@ -45,7 +56,20 @@ function App({history}) {
   const handleSignOut = () => {
     if(localStorage.getItem('token')) {
       localStorage.removeItem('token')
+      setToken('');
       setLoggedIn(false)
+    }
+  }
+
+  const paginate = async (pageNumber) => {
+    setCurrentPage(pageNumber);
+    const lastLinkIndex = currentPage * linksPerPage;
+    const firstLinkIndex = lastLinkIndex - linksPerPage;
+    try {
+      const res = await getCurrentStat(token, firstLinkIndex, linksPerPage)
+      setCurrentStat(res);
+    } catch {
+      console.log('ошибка')
     }
   }
 
@@ -63,10 +87,9 @@ function App({history}) {
                     })
                     .join('');
 
-    const token = localStorage.getItem('token');
     try {
       const res = await createLink(newLink, token);
-      handleGetStat(token);
+      paginate(currentPage);
 
     } catch {
       console.log('ошибка');
@@ -76,10 +99,20 @@ function App({history}) {
   const handleGetStat = async (token) => {
     try {
       const res = await getStat(token)
-      setDataLink(res.reverse());
-      return res;
+      setDataLink(res);
     } catch {
       console.log('ошибка')
+    }
+  }
+
+  const handleSortCounterStat = (value) => {
+    if (value === "rise") {
+      const newArr = currentStat.sort((a, b) => a.counter - b.counter);
+      setCurrentStat(() => newArr)
+    } else if (value === "down") {
+      console.log(currentStat)
+      const newArr = currentStat.sort((a, b) => b.counter - a.counter)
+      return setCurrentStat(newArr);
     }
   }
 
@@ -91,7 +124,8 @@ function App({history}) {
       >
         <Header linkTitle="Выйти" link="/sign-in" loggedIn={loggedIn} onSignOut={handleSignOut}/>
         <CreateLink onSubmit={handleCreateLink}/>
-        <Table dataLink={dataLink}/>
+        <Table dataLink={currentStat} onChange={handleSortCounterStat} firstLinkIndex={firstLinkIndex} />
+        <Pagination linksPerPage={linksPerPage} totalLinks={dataLink.length} paginate={paginate}/>
       </ProtectedRoute>
       <Route path="/sign-up">
         <Register onRegistration={handleRegistration} loggedIn={loggedIn}/>

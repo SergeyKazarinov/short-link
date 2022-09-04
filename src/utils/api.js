@@ -55,3 +55,15 @@ export const getStat = async (token) => {
   const data = await checkAnswer(res);
   return data;
 }
+
+export const getCurrentStat = async (token, firstLinkIndex, lastLinkIndex) => {
+  const res = await fetch(`${BASE_URL}/statistics?offset=${firstLinkIndex}&limit=${lastLinkIndex}`, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      "Authorization" : `Bearer ${token}`,
+    },
+  });
+  const data = await checkAnswer(res);
+  return data;
+}

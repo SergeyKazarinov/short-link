@@ -65,6 +65,7 @@
 @import url(./blocks/table/__short/table__short.css);
 @import url(./blocks/table/__link/table__link.css);
 @import url(./blocks/table/__counter/table__counter.css);
+@import url(./blocks/table/__number/table__number.css);
 
 /* footer */
 @import url(./blocks/footer/footer.css);
@@ -73,3 +74,12 @@
 /* sign-up__container */
 @import url(./blocks/sign-up/__container/sign-up__container.css);
 @import url(./blocks/sign-up/__description/sign-up__description.css);
+
+/* pagination */
+@import url(./blocks/pagination/pagination.css);
+@import url(./blocks/pagination/__list/pagination__list.css);
+@import url(./blocks/pagination/__item/pagination__item.css);
+
+/* select */
+@import url(./blocks/select/select.css);
+@import url(./blocks/select/__option/select__option.css);

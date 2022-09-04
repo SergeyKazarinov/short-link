@@ -11,6 +11,7 @@ const handleSubmit = (e) => {
   onSubmit({
     link: link.current.value,
   })
+  link.current.value = '';
 }
 
   return(
