@@ -1,10 +1,14 @@
 import React, {memo, useCallback} from "react";
 import Select from "./Select";
 
-const Table = ({dataLink, onChange, firstLinkIndex}) => {
+const Table = ({dataLink, onChange, firstLinkIndex, onSearch}) => {
   const handleClick = useCallback((e) => {
     navigator.clipboard.writeText(`http://79.143.31.216/s/${e.target.textContent}`);
   }, [])
+
+  const handleChange = (e) => {
+    onSearch(e.target.value)
+  } 
   
   const tableRow = dataLink.map((item, index) => (
                                   <ul key={item.id} className="list table__row grid">
@@ -17,6 +21,8 @@ const Table = ({dataLink, onChange, firstLinkIndex}) => {
   return(
     <div className="table">
       <h2 className="table__title">Статистика</h2>
+      <label htmlFor="search">Поиск</label>
+      <input className="form__input form__input_type_search" type="text" id="search" placeholder="Поиск ссылки"onChange={handleChange}/>
       <div className="table__container" border="2">
           <ul className="list grid">
             <li className="table__number">№</li>

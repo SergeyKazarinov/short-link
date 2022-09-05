@@ -17,10 +17,10 @@ function App({history}) {
   const [dataLink, setDataLink] = useState([]);
   const [defaultStat, setDefaultStat] = useState([])
   const [currentStat, setCurrentStat] = useState([]);
-  const [isPopupOpen, setIsPopupOpen] = useState(true);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [shortLink, setShortLink] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
-  const [linksPerPage] = useState(20);
+  const [linksPerPage] = useState(50);
   const lastLinkIndex = currentPage * linksPerPage;
   const firstLinkIndex = lastLinkIndex - linksPerPage;
 
@@ -65,6 +65,11 @@ function App({history}) {
       setLoggedIn(false)
     }
   }, [])
+
+  
+  const closePopup= () =>{
+    setIsPopupOpen(false);
+  }
 
   const paginate = async (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -124,9 +129,16 @@ function App({history}) {
       setCurrentStat(defaultStat)
     }
   }
-
-  function closePopup() {
-    setIsPopupOpen(false);
+  
+  const handleSearchLink = (value) => {
+    if(value) {
+      const sortStat = dataLink.filter((item) => {
+        return (item.counter == value || item.short.includes(value) || item.target.includes(value))
+      })
+      setCurrentStat(sortStat);
+    } else {
+      setCurrentStat(defaultStat)
+    }
   }
 
   return (
@@ -138,7 +150,7 @@ function App({history}) {
         >
           <Header linkTitle="Выйти" link="/sign-in" loggedIn={loggedIn} onSignOut={handleSignOut}/>
           <CreateLink onSubmit={handleCreateLink}/>
-          <Table dataLink={currentStat} onChange={handleSortStat} firstLinkIndex={firstLinkIndex} />
+          <Table dataLink={currentStat} onChange={handleSortStat} firstLinkIndex={firstLinkIndex} onSearch={handleSearchLink}/>
           <Pagination linksPerPage={linksPerPage} totalLinks={dataLink.length} paginate={paginate}/>
           <Footer />
         </ProtectedRoute>
