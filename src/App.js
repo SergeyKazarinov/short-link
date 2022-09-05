@@ -9,6 +9,7 @@ import Header from "./components/Header";
 import CreateLink from "./components/CreateLink";
 import Table from "./components/Table";
 import Pagination from "./components/Pagination";
+import Popup from "./components/Popup";
 
 function App({history}) {
   const [token, setToken] = useState('');
@@ -16,6 +17,8 @@ function App({history}) {
   const [dataLink, setDataLink] = useState([]);
   const [defaultStat, setDefaultStat] = useState([])
   const [currentStat, setCurrentStat] = useState([]);
+  const [isPopupOpen, setIsPopupOpen] = useState(true);
+  const [shortLink, setShortLink] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [linksPerPage] = useState(20);
   const lastLinkIndex = currentPage * linksPerPage;
@@ -93,7 +96,8 @@ function App({history}) {
     try {
       const res = await createLink(newLink, token);
       paginate(currentPage);
-      console.log(res);
+      setShortLink(res);
+      setIsPopupOpen(true);
     } catch {
       console.log('ошибка');
     }
@@ -121,25 +125,39 @@ function App({history}) {
     }
   }
 
+  function closePopup() {
+    setIsPopupOpen(false);
+  }
+
   return (
-    <Switch>
-      <ProtectedRoute
-        exact path="/" 
-        loggedIn={loggedIn} 
-      >
-        <Header linkTitle="Выйти" link="/sign-in" loggedIn={loggedIn} onSignOut={handleSignOut}/>
-        <CreateLink onSubmit={handleCreateLink}/>
-        <Table dataLink={currentStat} onChange={handleSortStat} firstLinkIndex={firstLinkIndex} />
-        <Pagination linksPerPage={linksPerPage} totalLinks={dataLink.length} paginate={paginate}/>
-        <Footer />
-      </ProtectedRoute>
-      <Route path="/sign-up">
-        <Register onRegistration={handleRegistration} loggedIn={loggedIn}/>
-      </Route>
-      <Route path="/sign-in">
-        <Login onLogIn={handleSignIn} loggedIn={loggedIn}/>
-      </Route>
-    </Switch>
+    <>
+      <Switch>
+        <ProtectedRoute
+          exact path="/" 
+          loggedIn={loggedIn} 
+        >
+          <Header linkTitle="Выйти" link="/sign-in" loggedIn={loggedIn} onSignOut={handleSignOut}/>
+          <CreateLink onSubmit={handleCreateLink}/>
+          <Table dataLink={currentStat} onChange={handleSortStat} firstLinkIndex={firstLinkIndex} />
+          <Pagination linksPerPage={linksPerPage} totalLinks={dataLink.length} paginate={paginate}/>
+          <Footer />
+        </ProtectedRoute>
+        <Route path="/sign-up">
+          <Register onRegistration={handleRegistration} loggedIn={loggedIn}/>
+        </Route>
+        <Route path="/sign-in">
+          <Login onLogIn={handleSignIn} loggedIn={loggedIn}/>
+        </Route>
+      </Switch>
+
+      <Popup 
+        name="info"
+        nameContainer="popup__container-info"
+        link={shortLink}
+        isOpen={isPopupOpen}
+        onClose={closePopup}
+      />
+    </>
   );
 }
 

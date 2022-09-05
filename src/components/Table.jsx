@@ -10,7 +10,7 @@ const Table = ({dataLink, onChange, firstLinkIndex}) => {
                                   <ul key={item.id} className="list table__row grid">
                                     <li className="table__number">{firstLinkIndex + index + 1}</li>
                                     <li className="table__short table__copy"><a className="link" onClick={handleClick}>{item.short}</a></li>
-                                    <li className="table__link"><a className="link table__link" href={item.target}>{item.target}</a></li>
+                                    <li className="table__link"><a className="link table__link" href={item.target} target="_blank">{item.target}</a></li>
                                     <li className="table__counter">{item.counter}</li>
                                   </ul>)
           )
