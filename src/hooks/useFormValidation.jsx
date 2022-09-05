@@ -1,34 +1,34 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useCallback} from "react";
 
 const useFormValidation = (theFirstInput, theSecondInput) => {
   const [isTheFirstValid, setIsTheFirstValid] = useState(false);
   const [isTheSecondValid, setIsTheSecondValid] = useState(false);
   const [isButtonValid, setIsButtonValid] = useState(false);
 
-  function handleTheFirstInputChange() {
+  const handleTheFirstInputChange = useCallback(() => {
     if(theFirstInput.current.validity.valid) {
       setIsTheFirstValid(true);
     }
     else {
       setIsTheFirstValid(false);
     }
-  }
+  }, [])
 
-  function handleTheSecondInputChange() {
+  const handleTheSecondInputChange = useCallback(() => {
     if(theSecondInput.current.validity.valid) {
       setIsTheSecondValid(true);
     }
     else {
       setIsTheSecondValid(false);
     }
-  }
+  }, [])
 
-  function resetValid() {
+  const resetValid = () => {
     setIsTheFirstValid(false);
     setIsTheSecondValid(false);
   }
 
-  function activeValid() {
+  const activeValid = () => {
     setIsTheFirstValid(true);
     setIsTheSecondValid(true);
   }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {memo} from "react";
 
 const Select = ({id, onChange}) => {
   const handleChange = (e) => {
@@ -14,4 +14,4 @@ const Select = ({id, onChange}) => {
   )
 }
 
-export default Select;
+export default memo(Select);

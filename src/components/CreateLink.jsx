@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React, {useRef, memo, useCallback} from "react";
 import FieldSet from "./Fieldset";
 import useFormValidation from "../hooks/useFormValidation";
 
@@ -6,13 +6,13 @@ const CreateLink = ({onSubmit}) => {
 const link = useRef();
 const {isTheFirstValid, handleTheFirstInputChange} = useFormValidation(link);
 
-const handleSubmit = (e) => {
+const handleSubmit = useCallback((e) => {
   e.preventDefault();
   onSubmit({
     link: link.current.value,
   })
   link.current.value = '';
-}
+}, [])
 
   return(
     <div className="createLink">
@@ -31,11 +31,11 @@ const handleSubmit = (e) => {
           id="button-save"
           disabled={!isTheFirstValid}
         >
-          Создат ссылку
+          Создать ссылку
         </button>
       </form>
     </div>
   )
 }
 
-export default CreateLink;
+export default memo(CreateLink);

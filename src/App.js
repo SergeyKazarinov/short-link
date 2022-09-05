@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import { Route, Switch, withRouter } from 'react-router-dom';
 import ProtectedRoute from "./components/ProtectedRoute";
 import Register from "./components/Register";
@@ -9,6 +9,7 @@ import Header from "./components/Header";
 import CreateLink from "./components/CreateLink";
 import Table from "./components/Table";
 import Pagination from "./components/Pagination";
+import Popup from "./components/Popup";
 
 function App({history}) {
   const [token, setToken] = useState('');
@@ -16,8 +17,10 @@ function App({history}) {
   const [dataLink, setDataLink] = useState([]);
   const [defaultStat, setDefaultStat] = useState([])
   const [currentStat, setCurrentStat] = useState([]);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [shortLink, setShortLink] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
-  const [linksPerPage] = useState(20);
+  const [linksPerPage] = useState(50);
   const lastLinkIndex = currentPage * linksPerPage;
   const firstLinkIndex = lastLinkIndex - linksPerPage;
 
@@ -33,7 +36,7 @@ function App({history}) {
     }
   }, []);
 
-  const handleSignIn = async ({username, password}) => {
+  const handleSignIn = useCallback(async ({username, password}) => {
     try{
       const res = await authorize(username, password);
       localStorage.setItem('token', res.access_token);
@@ -44,23 +47,28 @@ function App({history}) {
     } catch {
       console.log('Ошибка');
     }
-  }
+  }, [])
 
-  const handleRegistration = async ({username, password}) => {
+  const handleRegistration = useCallback(async ({username, password}) => {
     try{
       const res = await register(username, password);
       handleSignIn(username, password);
     } catch {
       console.log('ошибка регистрации');
     }
-  }
+  }, [])
 
-  const handleSignOut = () => {
+  const handleSignOut = useCallback(() => {
     if(localStorage.getItem('token')) {
       localStorage.removeItem('token')
       setToken('');
       setLoggedIn(false)
     }
+  }, [])
+
+  
+  const closePopup= () =>{
+    setIsPopupOpen(false);
   }
 
   const paginate = async (pageNumber) => {
@@ -93,8 +101,8 @@ function App({history}) {
     try {
       const res = await createLink(newLink, token);
       paginate(currentPage);
-      console.log(res)
-
+      setShortLink(res);
+      setIsPopupOpen(true);
     } catch {
       console.log('ошибка');
     }
@@ -109,7 +117,7 @@ function App({history}) {
     }
   }
 
-  const handleSortCounterStat = (value, name) => {
+  const handleSortStat = (value, name) => {
     const newDataLink = currentStat.concat();
     if (value === "rise") {
       const sortDataLink = newDataLink.sort((a, b) => (a[name] > b[name] ? 1 : -1))
@@ -121,26 +129,61 @@ function App({history}) {
       setCurrentStat(defaultStat)
     }
   }
+  
+  const handleSearchLink = (value) => {
+    if(value) {
+      const sortStat = dataLink.filter((item) => {
+        return (item.counter == value || item.short.includes(value) || item.target.includes(value))
+      })
+      setCurrentStat(sortStat);
+    } else {
+      setCurrentStat(defaultStat)
+    }
+  }
 
   return (
-    <Switch>
-      <ProtectedRoute
-        exact path="/" 
-        loggedIn={loggedIn} 
-      >
-        <Header linkTitle="Выйти" link="/sign-in" loggedIn={loggedIn} onSignOut={handleSignOut}/>
-        <CreateLink onSubmit={handleCreateLink}/>
-        <Table dataLink={currentStat} onChange={handleSortCounterStat} firstLinkIndex={firstLinkIndex} />
-        <Pagination linksPerPage={linksPerPage} totalLinks={dataLink.length} paginate={paginate}/>
-        <Footer />
-      </ProtectedRoute>
-      <Route path="/sign-up">
-        <Register onRegistration={handleRegistration} loggedIn={loggedIn}/>
-      </Route>
-      <Route path="/sign-in">
-        <Login onLogIn={handleSignIn} loggedIn={loggedIn}/>
-      </Route>
-    </Switch>
+    <>
+      <Switch>
+        <ProtectedRoute
+          exact path="/" 
+          loggedIn={loggedIn} 
+        >
+          <Header 
+            linkTitle="Выйти"
+            link="/sign-in"
+            loggedIn={loggedIn}
+            onSignOut={handleSignOut}
+          />
+          <CreateLink onSubmit={handleCreateLink}/>
+          <Table 
+            dataLink={currentStat}
+            onChange={handleSortStat} 
+            firstLinkIndex={firstLinkIndex} 
+            onSearch={handleSearchLink}
+          />
+          <Pagination 
+            linksPerPage={linksPerPage} 
+            totalLinks={dataLink.length} 
+            paginate={paginate}
+          />
+          <Footer />
+        </ProtectedRoute>
+        <Route path="/sign-up">
+          <Register onRegistration={handleRegistration} loggedIn={loggedIn}/>
+        </Route>
+        <Route path="/sign-in">
+          <Login onLogIn={handleSignIn} loggedIn={loggedIn}/>
+        </Route>
+      </Switch>
+
+      <Popup 
+        name="info"
+        nameContainer="popup__container-info"
+        link={shortLink}
+        isOpen={isPopupOpen}
+        onClose={closePopup}
+      />
+    </>
   );
 }
 

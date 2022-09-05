@@ -1,4 +1,4 @@
-import React from "react";
+import React, {memo} from "react";
 
 const Pagination = ({linksPerPage, totalLinks, paginate}) => {
   const pageNumber = [];
@@ -21,4 +21,4 @@ const Pagination = ({linksPerPage, totalLinks, paginate}) => {
   )
 }
 
-export default Pagination;
+export default memo(Pagination);
