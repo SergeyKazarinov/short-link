@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useCallback, useState } from "react";
 
 function FieldSet({inputType, inputClassType, placeholder, id, minLength, maxLength, onChange, inputRef}) {
   const [errorMessage, setErrorMessage] = useState('');
   const [isValid, setIsValid] = useState(true);
 
-  function handleErrorMessage(e) {
+  const handleErrorMessage = useCallback((e) => {
     if (!e.target.validity.valid) {
       setIsValid(false);
       setErrorMessage(e.target.validationMessage);
@@ -16,7 +16,7 @@ function FieldSet({inputType, inputClassType, placeholder, id, minLength, maxLen
     }
 
     onChange(e);
-  }
+  }, [])
 
   return(
     <fieldset className="form__set">
@@ -36,4 +36,4 @@ function FieldSet({inputType, inputClassType, placeholder, id, minLength, maxLen
   )
 }
 
-export default FieldSet;
+export default memo(FieldSet);

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import { Route, Switch, withRouter } from 'react-router-dom';
 import ProtectedRoute from "./components/ProtectedRoute";
 import Register from "./components/Register";
@@ -33,7 +33,7 @@ function App({history}) {
     }
   }, []);
 
-  const handleSignIn = async ({username, password}) => {
+  const handleSignIn = useCallback(async ({username, password}) => {
     try{
       const res = await authorize(username, password);
       localStorage.setItem('token', res.access_token);
@@ -44,24 +44,24 @@ function App({history}) {
     } catch {
       console.log('Ошибка');
     }
-  }
+  }, [])
 
-  const handleRegistration = async ({username, password}) => {
+  const handleRegistration = useCallback(async ({username, password}) => {
     try{
       const res = await register(username, password);
       handleSignIn(username, password);
     } catch {
       console.log('ошибка регистрации');
     }
-  }
+  }, [])
 
-  const handleSignOut = () => {
+  const handleSignOut = useCallback(() => {
     if(localStorage.getItem('token')) {
       localStorage.removeItem('token')
       setToken('');
       setLoggedIn(false)
     }
-  }
+  }, [])
 
   const paginate = async (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -93,8 +93,7 @@ function App({history}) {
     try {
       const res = await createLink(newLink, token);
       paginate(currentPage);
-      console.log(res)
-
+      console.log(res);
     } catch {
       console.log('ошибка');
     }
@@ -109,7 +108,7 @@ function App({history}) {
     }
   }
 
-  const handleSortCounterStat = (value, name) => {
+  const handleSortStat = (value, name) => {
     const newDataLink = currentStat.concat();
     if (value === "rise") {
       const sortDataLink = newDataLink.sort((a, b) => (a[name] > b[name] ? 1 : -1))
@@ -130,7 +129,7 @@ function App({history}) {
       >
         <Header linkTitle="Выйти" link="/sign-in" loggedIn={loggedIn} onSignOut={handleSignOut}/>
         <CreateLink onSubmit={handleCreateLink}/>
-        <Table dataLink={currentStat} onChange={handleSortCounterStat} firstLinkIndex={firstLinkIndex} />
+        <Table dataLink={currentStat} onChange={handleSortStat} firstLinkIndex={firstLinkIndex} />
         <Pagination linksPerPage={linksPerPage} totalLinks={dataLink.length} paginate={paginate}/>
         <Footer />
       </ProtectedRoute>

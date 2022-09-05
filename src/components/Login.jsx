@@ -1,4 +1,4 @@
-import React from "react";
+import React, {memo} from "react";
 import Header from "./Header";
 import SignUp from "./SignUp";
 
@@ -11,4 +11,4 @@ const Login = ({onLogIn, loggedIn}) => {
   )
 }
 
-export default Login;
+export default memo(Login);

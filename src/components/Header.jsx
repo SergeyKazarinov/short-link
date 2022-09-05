@@ -1,4 +1,4 @@
-import React from "react";
+import React, {memo} from "react";
 import { Link } from "react-router-dom";
 import logo from '../images/logo.svg';
 
@@ -16,4 +16,4 @@ function Header({linkTitle, link, onSignOut}) {
   );
 }
 
-export default Header;
+export default memo(Header);

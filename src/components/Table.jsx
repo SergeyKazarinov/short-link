@@ -1,10 +1,11 @@
-import React from "react";
+import React, {memo, useCallback} from "react";
 import Select from "./Select";
 
 const Table = ({dataLink, onChange, firstLinkIndex}) => {
-  const handleClick = (e) => {
+  const handleClick = useCallback((e) => {
     navigator.clipboard.writeText(`http://79.143.31.216/s/${e.target.textContent}`);
-  }
+  }, [])
+  
   const tableRow = dataLink.map((item, index) => (
                                   <ul key={item.id} className="list table__row grid">
                                     <li className="table__number">{firstLinkIndex + index + 1}</li>
@@ -36,4 +37,4 @@ const Table = ({dataLink, onChange, firstLinkIndex}) => {
   )
 }
 
-export default Table;
+export default memo(Table);

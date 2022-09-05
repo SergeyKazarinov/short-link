@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, memo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import useFormValidation from "../hooks/useFormValidation";
 import FieldSet from "./Fieldset";
@@ -9,14 +9,14 @@ const SignUp = ({title, titleBtn, isLogin, onSubmit }) => {
   const userPassword = useRef();
   const {isButtonValid, handleTheFirstInputChange, handleTheSecondInputChange} = useFormValidation(userName, userPassword);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = useCallback((e) => {
     e.preventDefault();
 
     onSubmit({
       username: userName.current.value,
       password: userPassword.current.value
     })
-  }
+  }, [])
 
   return(
     <div className="sign-up__container">
@@ -57,4 +57,4 @@ const SignUp = ({title, titleBtn, isLogin, onSubmit }) => {
   )
 }
 
-export default SignUp;
+export default memo(SignUp);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {memo} from "react";
 import Header from "./Header";
 import SignUp from "./SignUp";
 
@@ -12,4 +12,4 @@ const Register = ({onRegistration, loggedIn}) => {
   )
 }
 
-export default Register;
+export default memo(Register);
