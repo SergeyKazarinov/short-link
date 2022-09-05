@@ -148,10 +148,24 @@ function App({history}) {
           exact path="/" 
           loggedIn={loggedIn} 
         >
-          <Header linkTitle="Выйти" link="/sign-in" loggedIn={loggedIn} onSignOut={handleSignOut}/>
+          <Header 
+            linkTitle="Выйти"
+            link="/sign-in"
+            loggedIn={loggedIn}
+            onSignOut={handleSignOut}
+          />
           <CreateLink onSubmit={handleCreateLink}/>
-          <Table dataLink={currentStat} onChange={handleSortStat} firstLinkIndex={firstLinkIndex} onSearch={handleSearchLink}/>
-          <Pagination linksPerPage={linksPerPage} totalLinks={dataLink.length} paginate={paginate}/>
+          <Table 
+            dataLink={currentStat}
+            onChange={handleSortStat} 
+            firstLinkIndex={firstLinkIndex} 
+            onSearch={handleSearchLink}
+          />
+          <Pagination 
+            linksPerPage={linksPerPage} 
+            totalLinks={dataLink.length} 
+            paginate={paginate}
+          />
           <Footer />
         </ProtectedRoute>
         <Route path="/sign-up">
