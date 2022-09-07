@@ -72,11 +72,9 @@ function App({history}) {
   }
 
   const paginate = async (pageNumber) => {
-    setCurrentPage(pageNumber);
-    const lastLinkIndex = currentPage * linksPerPage;
-    const firstLinkIndex = lastLinkIndex - linksPerPage;
+    setCurrentPage(state => state = pageNumber);
     try {
-      const res = await getCurrentStat(token, firstLinkIndex, linksPerPage)
+      const res = await getCurrentStat(token, linksPerPage, firstLinkIndex)
       setCurrentStat(res);
       setDefaultStat(res);
     } catch {
