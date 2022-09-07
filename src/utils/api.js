@@ -56,8 +56,8 @@ export const getStat = async (token) => {
   return data;
 }
 
-export const getCurrentStat = async (token, firstLinkIndex, lastLinkIndex) => {
-  const res = await fetch(`${BASE_URL}/statistics?offset=${firstLinkIndex}&limit=${lastLinkIndex}`, {
+export const getCurrentStat = async (token, linksPerPage, firstLinkIndex) => {
+  const res = await fetch(`${BASE_URL}/statistics?offset=${firstLinkIndex}&limit=${linksPerPage}`, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
