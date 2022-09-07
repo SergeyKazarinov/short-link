@@ -33,9 +33,8 @@ const Table = ({dataLink, onChange, firstLinkIndex, onSearch}) => {
           
           <ul className="list grid">
             <li className="table__number">Сортировка</li>
-            <li className="table__short"><Select id='short' onChange={onChange}/></li>
-            <li className="table__link"><Select id='target' onChange={onChange}/></li>
-            <li className="table__counter"><Select id='counter' onChange={onChange}/></li>
+            <li></li>
+            <li className="table__short"><Select onChange={onChange}/></li>
           </ul>
           {tableRow}
       </div>

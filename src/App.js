@@ -21,6 +21,7 @@ function App({history}) {
   const [shortLink, setShortLink] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [linksPerPage] = useState(50);
+  const [orderForSort, setOrderForSort] = useState(null);
   const lastLinkIndex = currentPage * linksPerPage;
   const firstLinkIndex = lastLinkIndex - linksPerPage;
 
@@ -31,7 +32,7 @@ function App({history}) {
       setToken(token)
       setLoggedIn(true);
       handleGetStat(token);
-      paginate(currentPage);
+      handlePageNavigation();
       history.push('/');
     }
   }, []);
@@ -42,7 +43,7 @@ function App({history}) {
       localStorage.setItem('token', res.access_token);
       setLoggedIn(true);
       handleGetStat(res.access_token);
-      paginate(currentPage)
+      handlePageNavigation()
       history.push('/');
     } catch {
       console.log('Ошибка');
@@ -71,10 +72,13 @@ function App({history}) {
     setIsPopupOpen(false);
   }
 
-  const paginate = async (pageNumber) => {
-    setCurrentPage(state => state = pageNumber);
+  useEffect(() => {
+    handlePageNavigation();
+  }, [currentPage, orderForSort])
+
+  const handlePageNavigation = async () => {
     try {
-      const res = await getCurrentStat(token, linksPerPage, firstLinkIndex)
+      const res = await getCurrentStat(token, linksPerPage, firstLinkIndex, orderForSort)
       setCurrentStat(res);
       setDefaultStat(res);
     } catch {
@@ -98,7 +102,7 @@ function App({history}) {
 
     try {
       const res = await createLink(newLink, token);
-      paginate(currentPage);
+      handlePageNavigation();
       setShortLink(res);
       setIsPopupOpen(true);
     } catch {
@@ -115,16 +119,22 @@ function App({history}) {
     }
   }
 
-  const handleSortStat = (value, name) => {
-    const newDataLink = currentStat.concat();
-    if (value === "rise") {
-      const sortDataLink = newDataLink.sort((a, b) => (a[name] > b[name] ? 1 : -1))
-      setCurrentStat(sortDataLink)
-    } else if (value === "down") {
-      const sortDataLink = newDataLink.sort((a, b) => (a[name] < b[name] ? 1 : -1))
-      setCurrentStat(sortDataLink)
+  const handleSortStat = (value) => {
+    
+    if (value === "shortRise") {
+      setOrderForSort(`&order=asc_short`);
+    } else if (value === "shortDown") {
+      setOrderForSort(`&order=desc_short`);
+    } else if (value === "targetRise") {
+      setOrderForSort(`&order=asc_target`);
+    } else if (value === "targetDown") {
+      setOrderForSort(`&order=desc_target`);
+    } else if (value === "counterRise") {
+      setOrderForSort(`&order=asc_counter`);
+    } else if (value === "counterDown") {
+      setOrderForSort(`&order=desc_counter`);
     } else {
-      setCurrentStat(defaultStat)
+      setOrderForSort(null)
     }
   }
   
@@ -138,6 +148,10 @@ function App({history}) {
       setCurrentStat(defaultStat)
     }
   }
+
+  const handleChangeCurrentPage = (pageNumber) => {
+    setCurrentPage(state => state = pageNumber);
+  } 
 
   return (
     <>
@@ -162,7 +176,7 @@ function App({history}) {
           <Pagination 
             linksPerPage={linksPerPage} 
             totalLinks={dataLink.length} 
-            paginate={paginate}
+            paginate={handleChangeCurrentPage}
           />
           <Footer />
         </ProtectedRoute>
